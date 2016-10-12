@@ -1,5 +1,3 @@
-<<<<<<< 
-=======
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,55 +6,52 @@
 <script src="http://code.jquery.com/jquery-3.1.1.js"></script>
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<style type="text/css">
-.stage {
-	width: 800px;
-	height: 600px;
-	background-image: url("imagens/espaco.jpg");
-	background-color: black;
-	position: absolute;
-}
-
-.invasor {
-	width: 20px;
-	height: 20px;
-	background-color: blue;
-	position: absolute;
-	display: block;
-	background-color: blue;
-}
-</style>
-
-
 <script type="text/javascript">
 	//Definição dos Invasores
-	
-	var distanciaInvasores = 30;
 
-	function Invasor(x, y) {
-		this.x = x * distanciaInvasores;
-		this.y = y * distanciaInvasores;
-	
-	}
+	var distanciaHorizontalInvasores = 30;
+	var distanciaVerticalInvasores = 10;
 
+	var tamanhoInvasores = 30;
 	var invasoresLinha = 5;
-	var invasoresColuna = 10;
+	var invasoresColuna = 8;
 	var invasores = [];
 
-	
+	var direcaoHorizontal = 1;// 1 move para a direita e -1 move para a esquerda;
+	var posicaoVertical = 0; // 
+
+	function gameLog(log, alert) {
+		var id = new Date().getTime();
+		$('<div></div>', {'data-id': id}).addClass('log').text(log).appendTo($('#logs-container')).css('background', '#FF7').animate({backgroundColor: '#444'}, 500);
+		setTimeout(function() {
+			$('.log[data-id='+id+']').fadeOut(function() {
+				$(this).remove();
+			});
+		}, 60000);
+	}
+
 	function iniciarInvasores() {
+
+		gameLog("Inicialização de invasores"); /////
+		
 		var n = 0;
 		var div;
 		for (i = 0; i < invasoresColuna; i++) {
 			for (j = 0; j < invasoresLinha; j++) {
 				div = document.createElement("div");
-				invasores[n] = new Invasor(i, j);
 				div.setAttribute("id", "invasor" + n);
-				div.setAttribute("name", "invasor");				
+				div.setAttribute("name", "invasor");
 				div.setAttribute("class", "invasor");
-				div.setAttribute("x", i*distanciaInvasores);
-				div.setAttribute("style", "left: " + i*distanciaInvasores
-						+ "px; top:" + j*distanciaInvasores + "px");
+				div.setAttribute("x", i
+						* (distanciaHorizontalInvasores + tamanhoInvasores));
+				div.setAttribute("y", j
+						* (distanciaVerticalInvasores + tamanhoInvasores));
+
+				div.setAttribute("style", "left: " + i
+						* (distanciaHorizontalInvasores + tamanhoInvasores)
+						+ "px; top:" + j
+						* (distanciaVerticalInvasores + tamanhoInvasores)
+						+ "px");
 				$("#divStage").append(div);
 				n++;
 			}
@@ -64,23 +59,122 @@
 		setInterval(moverInvasores, 1000);
 	}
 	
-	function moverInvasores(){
+
+	function moverInvasores() {
+
+		gameLog("Move invasores"); /////
+
+		var direcao = direcaoHorizontal;
+		var posicao = posicaoVertical;
 		var x;
+		var y;
 		var quantidadeInimigos = document.getElementsByName("invasor").length;
-		for(i=0;i<quantidadeInimigos;i++){
-			x = parseInt(document.getElementsByName("invasor")[i].getAttribute("x"));
-			x+=(20+distanciaInvasores);
+
+		for (i = 0; i < quantidadeInimigos; i++) {
+
+			x = parseInt(document.getElementsByName("invasor")[i]
+					.getAttribute("x"));
+
+			y = parseInt(document.getElementsByName("invasor")[i]
+					.getAttribute("y"));
+
+			if (posicao === 1) {
+				y += tamanhoInvasores + distanciaVerticalInvasores;
+				posicaoVertical = 2;
+			} else {
+				if (direcao === 1) {
+					x += (tamanhoInvasores + distanciaHorizontalInvasores);
+				} else {
+					x -= (tamanhoInvasores + distanciaHorizontalInvasores);
+				}
+			}
 			document.getElementsByName("invasor")[i].setAttribute("x", x);
-			document.getElementsByName("invasor")[i].style.left = document.getElementsByName("invasor")[i].getAttribute("x")+"px";
+			document.getElementsByName("invasor")[i].style.left = document
+					.getElementsByName("invasor")[i].getAttribute("x")
+					+ "px";
+
+			document.getElementsByName("invasor")[i].setAttribute("y", y);
+			document.getElementsByName("invasor")[i].style.top = document
+					.getElementsByName("invasor")[i].getAttribute("y")
+					+ "px";
+
+			if (x + (tamanhoInvasores + distanciaHorizontalInvasores) > 800) {
+				if (direcao === direcaoHorizontal && posicaoVertical === 0) {
+					direcaoHorizontal *= -1;
+					posicaoVertical = 1;
+				} else {
+					if (posicaoVertical === 2) {
+						posicaoVertical = 0;
+					}
+				}
+			}
+
+			if (x - (tamanhoInvasores + distanciaHorizontalInvasores) < 0) {
+				if (direcao === direcaoHorizontal && posicaoVertical === 0) {
+					direcaoHorizontal *= -1;
+					posicaoVertical = 1;
+				} else {
+					if (posicaoVertical === 2) {
+						posicaoVertical = 0;
+					}
+				}
+			}
 		}
 	}
+
+	
+	function atingeinimigo(){
+		gameLog("atinge inimigo");
+			
+	}
+
+
 	
 </script>
 
+<style type="text/css">
+.stage {
+	width: 820px;
+	height: 600px;
+	background-image: url("imagens/espaco.jpg");
+	background-color: black;
+	position: absolute;
+}
+
+.invasor {
+	width: 30px;
+	height: 30px;
+	background-color: blue;
+	position: absolute;
+	display: block;
+	background-color: blue;
+}
+
+#logs-container {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 250px;
+	background: #444;
+	border-right: 1px solid #111;
+	font-size: 12px;
+	font-family: monospace;
+	color: white;
+	opacity: 0;
+}
+
+#logs-container:hover {
+	opacity: 100;
+}
+</style>
+
 </head>
-<body>
+<body bgcolor="black">
+	
 	<div class="stage" id="divStage">
 		<button onclick="iniciarInvasores()">Iniciar Game</button>
+		<div id="logs-container">
+	</div>
 	</div>
 
 

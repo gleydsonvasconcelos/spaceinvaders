@@ -1,0 +1,63 @@
+[33mcommit 1185dcc6d9634286d6a130cf5a1e05e27acd0a15[m
+Author: Ewerton Souto <otavio.souto@gmail.com>
+Date:   Wed Oct 12 17:33:43 2016 -0300
+
+    atualizando novamente
+
+[33mcommit 3204143554a314a11b509d0006b55a1154671abf[m
+Merge: 826ed57 d1bc0f4
+Author: Ewerton Souto <otavio.souto@gmail.com>
+Date:   Wed Oct 12 16:47:53 2016 -0300
+
+    treinando git
+
+[33mcommit 826ed57bb0a277354b7557bfc55ddda4e49e19b9[m
+Author: Ewerton Souto <otavio.souto@gmail.com>
+Date:   Wed Oct 12 16:14:54 2016 -0300
+
+    etando o spaceinvaders.html
+
+[33mcommit d1bc0f47af692b6e63fe849c1b8d7796fdeb719e[m
+Author: Gleydson <Gleydson@DESKTOP-LJ24PLU>
+Date:   Wed Oct 12 13:09:30 2016 -0300
+
+    Inicio do movimento dos inimigos.
+
+[33mcommit 9dcdb125f6bd5ad347aa76f43b8c16973cffb9ea[m
+Merge: e5968cf ba546be
+Author: gleydsonvasconcelos <gleydsonn@hotmail.com>
+Date:   Wed Oct 12 09:20:37 2016 -0300
+
+    Merge pull request #1 from ewerton32/master
+    
+    Gifs
+
+[33mcommit ba546be006f018ee46e3e675f12073047b74c430[m
+Author: Ewerton Souto <otavio.souto@gmail.com>
+Date:   Sun Oct 9 22:51:16 2016 -0300
+
+    movendo espaço
+
+[33mcommit 8ba6d456df4fd87c84a5fa6779d64afccf08b523[m
+Author: Ewerton Souto <otavio.souto@gmail.com>
+Date:   Sun Oct 9 22:47:09 2016 -0300
+
+    atualização espaço
+
+[33mcommit 8d70ce7c0641faeba7e32e9d732240e585b1ee8f[m
+Author: Ewerton Souto <otavio.souto@gmail.com>
+Date:   Sun Oct 9 22:37:52 2016 -0300
+
+    corrigindo local de images
+
+[33mcommit e63267fd5a6bde43c2b603ae34a9878daaadd233[m
+Author: Ewerton Souto <otavio.souto@gmail.com>
+Date:   Sun Oct 9 22:33:59 2016 -0300
+
+    Adicao do diretorio images
+
+[33mcommit e5968cf62b3daeeaeb6d38a61ed30dc9f2e1a1bd[m
+Author: Gleydson <Gleydson@DESKTOP-LJ24PLU>
+Date:   Sun Oct 9 20:48:20 2016 -0300
+
+    Adicionando o Projeto Space Invaders.
