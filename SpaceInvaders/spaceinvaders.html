@@ -125,13 +125,33 @@
 			}
 		}
 	}
+
+	function removeInimigo(left, top) {
+		var quantidadeInimigos = document.getElementsByName("invasor").length;
+		var x, y;
+		for (i = 0; i < quantidadeInimigos; i++) {
+			x = parseInt(document.getElementsByName("invasor")[i].getAttribute("x"));
+			y = parseInt(document.getElementsByName("invasor")[i].getAttribute("y"));
+			if ( x >= left && x <= (left + tamanhoInvasores)
+					&&  y>= top && y <= (top + tamanhoInvasores)){
+				console.log("tiro");
+				document.getElementsByName("invasor")[i].remove();
+				return;
+			}
+		}
+
+	}
+	
+
 </script>
 
 </head>
 <body>
 	<div class="stage" id="divStage">
 		<button onclick="iniciarInvasores()">Iniciar Game</button>
+
 	</div>
+
 
 
 </body>
