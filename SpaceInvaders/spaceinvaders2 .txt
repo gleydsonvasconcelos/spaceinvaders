@@ -45,7 +45,7 @@ function gameLog(log, alert) {
 		$('.log[data-id='+id+']').fadeOut(function() {
 			$(this).remove();
 		});
-	}, 60000);
+	}, 6000);
 }
 
 function win() {
@@ -90,7 +90,7 @@ function startLevel(level) {
 	gameLog("Inserção de Inimigos"); /////
 	
 	var top = 50;
-	for(var i = 0; i < 3; i++) {
+	for(var i = 0; i < 7; i++) {
 		var left = 5;
 		for(var j = 0; j < 8; j++) {
 			var enemyId = enemyIdIndex;
@@ -302,7 +302,7 @@ $(function() {
 		}
 		
 		#logs-container:hover {
-			opacity:100;
+			opacity:1;
 		}
 
 		#game {
@@ -409,7 +409,7 @@ $(function() {
 			Aperte A
 		</div>
 		<div id="gun"></div>
-		<div id="credits">Pós-graduação IFPE.</div>
+		<div id="credits">Yann P.</div>
 	</div>
 </body>
 </html>
