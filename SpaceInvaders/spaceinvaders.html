@@ -3,24 +3,84 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<script src="http://code.jquery.com/jquery-3.1.1.js" ></script>
+<script src="http://code.jquery.com/jquery-3.1.1.js"></script>
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <style type="text/css">
+.stage {
+	width: 800px;
+	height: 600px;
+	background-image: url("imagens/espaco.jpg");
+	background-color: black;
+	position: absolute;
+}
 
-
-	.stage{
-		width: 800px;
-		height: 600px;
-		background-image: url("espaco.jpg");
-		background-color: blue; 
-		position: absolute;
-	}
+.invasor {
+	width: 20px;
+	height: 20px;
+	background-color: blue;
+	position: absolute;
+	display: block;
+	background-color: blue;
+}
 </style>
+
+
+<script type="text/javascript">
+	//Definição dos Invasores
+	
+	var distanciaInvasores = 30;
+
+	function Invasor(x, y) {
+		this.x = x * distanciaInvasores;
+		this.y = y * distanciaInvasores;
+	
+	}
+
+	var invasoresLinha = 5;
+	var invasoresColuna = 10;
+	var invasores = [];
+
+	
+	function iniciarInvasores() {
+		var n = 0;
+		var div;
+		for (i = 0; i < invasoresColuna; i++) {
+			for (j = 0; j < invasoresLinha; j++) {
+				div = document.createElement("div");
+				invasores[n] = new Invasor(i, j);
+				div.setAttribute("id", "invasor" + n);
+				div.setAttribute("name", "invasor");				
+				div.setAttribute("class", "invasor");
+				div.setAttribute("x", i*distanciaInvasores);
+				div.setAttribute("style", "left: " + i*distanciaInvasores
+						+ "px; top:" + j*distanciaInvasores + "px");
+				$("#divStage").append(div);
+				n++;
+			}
+		}
+		setInterval(moverInvasores, 1000);
+	}
+	
+	function moverInvasores(){
+		var x;
+		var quantidadeInimigos = document.getElementsByName("invasor").length;
+		for(i=0;i<quantidadeInimigos;i++){
+			x = parseInt(document.getElementsByName("invasor")[i].getAttribute("x"));
+			x+=(20+distanciaInvasores);
+			document.getElementsByName("invasor")[i].setAttribute("x", x);
+			document.getElementsByName("invasor")[i].style.left = document.getElementsByName("invasor")[i].getAttribute("x")+"px";
+		}
+	}
+	
+</script>
 
 </head>
 <body>
-<div class="stage">
+	<div class="stage" id="divStage">
+		<button onclick="iniciarInvasores()">Iniciar Game</button>
+	</div>
 
-</div>
+
 </body>
 </html>
