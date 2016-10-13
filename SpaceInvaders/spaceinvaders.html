@@ -135,6 +135,8 @@
 			if ( x >= left && x <= (left + tamanhoInvasores)
 					&&  y>= top && y <= (top + tamanhoInvasores)){
 				console.log("tiro");
+				//document.getElementsByName("invasor")[i].hide("explode",500);
+				$("#"+document.getElementsByName("invasor")[i].getAttribute("id")).hide("explode",300);
 				document.getElementsByName("invasor")[i].remove();
 				return;
 			}
@@ -149,10 +151,7 @@
 <body>
 	<div class="stage" id="divStage">
 		<button onclick="iniciarInvasores()">Iniciar Game</button>
-
+		
 	</div>
-
-
-
 </body>
 </html>
