@@ -70,6 +70,7 @@
 	var direcaoHorizontal = 1;// 1 move para a direita e -1 move para a esquerda;
 	var posicaoVertical = 0; //
 	var movimentoNave = 60; // Incremento de movimento da nave
+	var tiroLiberado = true;
 
 	function iniciarJogo() {
 		iniciarInvasores();
@@ -111,7 +112,9 @@
 					break;
 					
 				case seta.espaco:
-					adicionarMovimentoTiro();
+					if (tiroLiberado) {
+						adicionarMovimentoTiro();
+					}
 					break;
 	
 				default:
@@ -126,8 +129,26 @@
 		alturaNave = $("#nave").height();
 		posicaoNave = $("#nave").position();
 		posicaoTiro = posicaoNave.left; //Meio da nave
+		
 		$('<div />', {"class": 'tiro'}).css("left", posicaoTiro).css("bottom", '41px').appendTo($("#divStage"));
-		$(".tiro").animate({ "top": "0", "bottom": "800"}, 1000);		
+		
+		
+			$(".tiro").animate({ "top": "0", "bottom": "800"},{
+			    duration:1000,
+			    start:function(){
+			    	tiroLiberado = false;
+			    },
+			    complete:function(){
+			    	tiroLiberado = true;
+			    },
+			    progress: function(){
+			    	var posicaoTiro = $(this).position();
+			    	removeInimigo(posicaoTiro.left, posicaoTiro.top);
+			    	//Falta remover o tiro da tela e liberar o proximo tiro
+			    }
+			
+			});	
+				
 	}
 	
 	function iniciarInvasores() {
