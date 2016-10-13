@@ -10,7 +10,7 @@
 .stage {
 	width: 820px;
 	height: 600px;
-	background-image: url("imagens/espaco.jpg");
+	background-image: url("images/espaco.jpg");
 	background-color: black;
 	position: absolute;
 	left: 0;
@@ -39,7 +39,20 @@
 	left: 0;
 	right: 0;
 	margin: auto;
-	}
+}
+
+.tiro {
+	width: 2px;
+	height: 5px;
+	background-color: white;
+	position: absolute;
+	display: block;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	top: 41;
+	margin: auto;
+}
 </style>
 
 
@@ -57,6 +70,7 @@
 	var direcaoHorizontal = 1;// 1 move para a direita e -1 move para a esquerda;
 	var posicaoVertical = 0; //
 	var movimentoNave = 60; // Incremento de movimento da nave
+	var tiroLiberado = true;
 
 	function iniciarJogo() {
 		iniciarInvasores();
@@ -65,18 +79,22 @@
 	}
 	
 	function iniciarNave() {
-		var nave;
-		nave = document.createElement("div");
 		$('<div />', {
 	        "id": 'nave'}).appendTo($("#divStage"));
-	        
 	}
 	
 	function eventosDOM() {
+		
+		adicionarMovimentoNave();
+		//adicionarMovimentoTiro();
+
+	}
+		
+	function adicionarMovimentoNave(){
 		$(document).keydown(function(event) {
 		var nave = $("#nave");
 		var keyCode = event.keyCode || event.which,
-		    seta = {esquerda: 37, cima: 38, direita: 39, baixo: 40 };
+		    seta = {esquerda: 37, cima: 38, direita: 39, baixo: 40, espaco: 32 };
 			
 		switch (keyCode) {
 				case seta.esquerda:
@@ -92,13 +110,45 @@
 	
 				case seta.baixo: 
 					break;
+					
+				case seta.espaco:
+					if (tiroLiberado) {
+						adicionarMovimentoTiro();
+					}
+					break;
 	
 				default:
 					return;
 				}
-				event.preventDefault(); // prevent the default action (scroll / move caret)			
+				event.preventDefault(); // prevent the default action (scroll / move caret)		
 		});
-
+	}
+		
+	function adicionarMovimentoTiro(){
+		tamanhoNave = $("#nave").width();
+		alturaNave = $("#nave").height();
+		posicaoNave = $("#nave").position();
+		posicaoTiro = posicaoNave.left; //Meio da nave
+		
+		$('<div />', {"class": 'tiro'}).css("left", posicaoTiro).css("bottom", '41px').appendTo($("#divStage"));
+		
+		
+			$(".tiro").animate({ "top": "0", "bottom": "800"},{
+			    duration:1000,
+			    start:function(){
+			    	tiroLiberado = false;
+			    },
+			    complete:function(){
+			    	tiroLiberado = true;
+			    },
+			    progress: function(){
+			    	var posicaoTiro = $(this).position();
+			    	removeInimigo(posicaoTiro.left, posicaoTiro.top);
+			    	//Falta remover o tiro da tela e liberar o proximo tiro
+			    }
+			
+			});	
+				
 	}
 	
 	function iniciarInvasores() {
@@ -212,7 +262,7 @@
 <body>
 	<div class="stage" id="divStage">
 		<button onclick="iniciarJogo()">Iniciar Game</button>
-		
+
 	</div>
 </body>
 </html>
