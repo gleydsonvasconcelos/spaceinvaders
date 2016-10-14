@@ -99,22 +99,25 @@
 			
 		switch (keyCode) {
 				case seta.esquerda:
-					if ((nave.offset().left - movimentoNave) >=  $("#divStage").offset().left) {
-						nave.animate({left : "-=" + movimentoNave}, 100, 'swing');
+					if ((nave.position().left - 40 - movimentoNave) < $("#divStage").width()*-1) {
+						nave.animate({left : ($("#divStage").width()*-1) + 40}, 100, 'swing')
 					} else {
-						nave.css("left", -780);
+						nave.animate({left : "-=" + movimentoNave}, 100, 'swing');
 					}
+					nave.clearQueue();
 					break;
 	
 				case seta.cima:
 					break;
 	
-				case seta.direita:
-					if ((nave.offset().left + 40) <=  $("#divStage").position().left + 820) {
-						nave.animate({left : "+=" + movimentoNave}, 100, 'swing');
+				case seta.direita:				
+					if ((nave.position().left + 40 + movimentoNave) >  $("#divStage").width()) {
+						nave.animate({left : $("#divStage").width() - 40}, 100, 'swing')
+						nave.clearQueue();
 					} else {
-						nave.css("left", 780);
+						nave.animate({left : "+=" + movimentoNave}, 100, 'swing');
 					}
+					nave.clearQueue();
 					
 					break;
 	
