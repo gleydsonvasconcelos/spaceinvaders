@@ -56,9 +56,18 @@ body {
 	font-family: Helvetica, Verdana, Arial, sans-serif;;
 	color: white;
 	text-align: center;
-	height: 300px;
+	height: 100px;
 	line-height: 80px;
 	margin: 80px;
+}
+
+#scoreGame{
+	font-size: 14px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;;
+	color: white;
+	text-align: center;
+	height: 10px;
+	margin: 0px;
 }
 
 .tiro {
@@ -72,6 +81,17 @@ body {
 	right: 0;
 	top: 41;
 	margin: auto;
+}
+
+.tiroInimigo {
+	width: 2px;
+	height: 5px;
+	border: 1px solid limegreen;
+	background-color: limegreen;
+	position: absolute;
+	display: block;
+	margin: auto;
+	z-index: 999;
 }
 </style>
 
@@ -98,6 +118,7 @@ $(document).keydown(function(event){
 	var posicaoVertical = 0; //
 	var movimentoNave = 60; // Incremento de movimento da nave
 	var tiroLiberado = true;
+	var vidas = 3;
 	
 	
 
@@ -111,6 +132,8 @@ $(document).keydown(function(event){
 	function iniciarNave() {
 		$('<div />', {
 	        "id": 'nave'}).appendTo($("#divStage"));
+		$("#scoreGame").text("Vida(s): " + vidas);
+		
 	}
 	
 	function prepararJogo() {
@@ -151,6 +174,7 @@ $(document).keydown(function(event){
 			
 		switch (keyCode) {
 				case seta.esquerda:
+					
 					if ((nave.position().left - 40 - movimentoNave) < $("#divStage").width()*-1) {
 						nave.animate({left : ($("#divStage").width()*-1) + 40}, 100, 'swing')
 					} else {
@@ -244,7 +268,8 @@ $(document).keydown(function(event){
 				n++;
 			}
 		}
-		setInterval(moverInvasores, 1000);
+		
+		var timerInvasores = setInterval(moverInvasores, 1000);
 	}
 
 	function moverInvasores() {
@@ -304,9 +329,56 @@ $(document).keydown(function(event){
 					}
 				}
 			}
+		}	
+		if (vidas > 0) {
+			tiroInimigo();
 		}
 	}
 
+	function tiroInimigo() {
+		invasor = $('.invasor');
+		invasorAleatorio = $(invasor[Math.floor(Math.random()*invasor.length)]);
+		posx = invasorAleatorio.position().left + 15;
+		posy = invasorAleatorio.position().top + 30;
+		
+		$('<div />', {"class": 'tiroInimigo'}).css("left", posx).css("top", posy).appendTo($("#divStage"));
+		$(".tiroInimigo").last().animate({ "top": "600"}
+		,{
+		    duration:10000,
+		    start:function(){
+		    	
+		    },
+		    complete:function(){
+		    	$(this).remove();		    	
+		    },
+		    progress: function(){
+		    	var posicaoTiro = $(this).offset();
+		    	if (naveAtingida(posicaoTiro.left, posicaoTiro.top, $(this))) {
+		    		$(this).remove();
+		    		 $("#scoreGame").text("Vida(s): " + vidas);
+					  if (vidas < 1) {
+						  $(".tiroInimigo").stop();
+						  $(".invasor").remove();
+						  $("#scoreGame").text("GAME OVER");
+						  
+					  }
+		    	}
+
+		    }
+		
+		});	
+		
+	}
+	
+	function naveAtingida(left, top, tiro) {
+			  navex = $("#nave").offset().left;
+			  navey = $("#nave").offset().top;
+			  if (( left >= navex) && left <= (navex + 40) &&  top >= navey && top <= (navey+40)){
+				  vidas--;
+				return true;
+			  }
+	}
+	
 	function removeInimigo(left, top, tiro) {
 		var x, y;
 		$( ".invasor" ).each(function( index ) {
@@ -327,8 +399,9 @@ $(document).keydown(function(event){
 
 </head>
 <body>
+<div id="scoreGame"></div>
 	<div class="stage" id="divStage">
-		<div id="prepareGame">Space Invaders by IFPE pós team<br/>Pressiona ENTER para iniciar o jogo.</div>
+		<div id="prepareGame">Space Invaders by IFPE pós team<br/>Pressione ENTER para iniciar o jogo.</div>
 	</div>
 </body>
 </html>
