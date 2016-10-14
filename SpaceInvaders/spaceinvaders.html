@@ -405,7 +405,7 @@ body {
 							if (x + (deslocamentoHorizontalInimigos) > 800) {
 								if (direcao === direcaoHorizontal
 										&& posicaoVertical === 0) {
-									direcaoHorizontal *= -1;
+									direcaoHorizontal = -1;
 									posicaoVertical = 1;
 								} else {
 									if (posicaoVertical === 2) {
@@ -417,7 +417,7 @@ body {
 							if (x - (deslocamentoHorizontalInimigos) < 0) {
 								if (direcao === direcaoHorizontal
 										&& posicaoVertical === 0) {
-									direcaoHorizontal *= -1;
+									direcaoHorizontal = 1;
 									posicaoVertical = 1;
 								} else {
 									if (posicaoVertical === 2) {
