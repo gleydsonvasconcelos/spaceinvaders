@@ -43,6 +43,8 @@ body {
 	height: 600px;
 	background-image: url("images/espaco.jpg");
 	background-color: black;
+	font-size: 14px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -76,7 +78,7 @@ body {
 #nave {
 	width: 40px;
 	height: 40px;
-	background-image: url('images/nave.png');
+	background-image: url('images/Nave.gif');
 	background-repeat: no-repeat;
 	background-size: 100%;
 	position: absolute;
@@ -92,7 +94,7 @@ body {
 	font-family: Helvetica, Verdana, Arial, sans-serif;;
 	color: white;
 	text-align: center;
-	height: 300px;
+	height: 100px;
 	line-height: 80px;
 	margin: 80px;
 }
@@ -160,6 +162,8 @@ body {
 		$('<div />', {
 			"id" : 'nave'
 		}).appendTo($("#divStage"));
+		 $("#scoreGame").text("Vida(s): " + vidas);
+		
 	}
 
 	function prepararJogo() {
@@ -424,7 +428,10 @@ body {
 						}
 					}
 					if (vidas > 0) {
-						tiroInimigo();
+						if (($.now())%3 == 0) {
+							tiroInimigo();	
+						}
+						
 					}
 				}, velocidadeInimigos);
 
