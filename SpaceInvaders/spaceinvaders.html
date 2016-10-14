@@ -2,12 +2,15 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Space Invaders</title>
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/jquery-ui.js"></script>
 
 
 <style type="text/css">
+body {
+	background-color: black;
+}
 .stage {
 	width: 820px;
 	height: 600px;
@@ -28,18 +31,34 @@
 	position: absolute;
 	display: block;
 	background-color: blue;
+	
+		background-image: url('images/invasor.gif');
+	background-repeat: no-repeat;
+	background-size: 100%;
 }
 
 #nave {
 	width: 40px;
 	height: 40px;
-	background-color: red;
+	background-image: url('images/nave.png');
+	background-repeat: no-repeat;
+	background-size: 100%;
 	position: absolute;
 	display: block;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	margin: auto;
+}
+
+#prepareGame{
+	font-size: 34px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;;
+	color: white;
+	text-align: center;
+	height: 300px;
+	line-height: 80px;
+	margin: 80px;
 }
 
 .tiro {
@@ -58,6 +77,13 @@
 
 
 <script type="text/javascript">
+
+$(document).keydown(function(event){
+	if (event.keyCode == 13) {
+		prepararJogo();
+	}	
+}) 
+
 	//Definição dos Invasores
 
 	var distanciaHorizontalInvasores = 30;
@@ -72,8 +98,11 @@
 	var posicaoVertical = 0; //
 	var movimentoNave = 60; // Incremento de movimento da nave
 	var tiroLiberado = true;
+	
+	
 
 	function iniciarJogo() {
+		
 		iniciarInvasores();
 		iniciarNave();
 		eventosDOM();
@@ -84,10 +113,33 @@
 	        "id": 'nave'}).appendTo($("#divStage"));
 	}
 	
+	function prepararJogo() {
+		
+		textoIntro = ["Iniciando o Jogo...", "3", "2", "1", "Atacar!"];
+		contador = 0;
+		$('<div />', {
+	        "id": 'prepareGame'}).appendTo($("#divStage"));
+		var timer = setInterval(function(){
+			
+			
+			$("#prepareGame").text(textoIntro[contador]);
+			contador++;
+			console.debug(contador);
+			if (contador >= 6) {
+				$("#prepareGame").remove();
+				clearInterval(timer);
+				iniciarJogo();
+			}
+			
+		}, 1000);
+
+		
+
+	}
+	
 	function eventosDOM() {
 		
 		adicionarMovimentoNave();
-		//adicionarMovimentoTiro();
 
 	}
 		
@@ -147,7 +199,7 @@
 		
 		
 			$(".tiro").animate({ "top": "0", "bottom": "800"},{
-			    duration:1000,
+			    duration:500,
 			    start:function(){
 			    	tiroLiberado = false;
 			    },
@@ -161,6 +213,8 @@
 			    		tiroLiberado = true;
 			    		$(this).remove();
 			    	}
+			    	
+			    	
 			    }
 			
 			});	
@@ -274,8 +328,7 @@
 </head>
 <body>
 	<div class="stage" id="divStage">
-		<button onclick="iniciarJogo()">Iniciar Game</button>
-
+		<div id="prepareGame">Space Invaders by IFPE pós team<br/>Pressiona ENTER para iniciar o jogo.</div>
 	</div>
 </body>
 </html>
