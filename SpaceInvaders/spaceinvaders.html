@@ -12,6 +12,32 @@ body {
 	background-color: black;
 }
 
+.txtscore {
+	color: white;
+}
+.stage {
+	width: 800px;
+	height: 600px;
+	background-image: url("images/espaco.jpg");
+	background-color: black;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+}
+
+.score {
+	width: 800px;
+	height: 40px;
+	background-color: white;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
 .stage {
 	width: 800px;
 	height: 600px;
@@ -36,6 +62,15 @@ body {
 	background-repeat: no-repeat;
 	background-size: 100%;
 	tiroLiberado: true;
+}
+
+#scoreGame{
+	font-size: 14px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;;
+	color: white;
+	text-align: center;
+	height: 10px;
+	margin: 0px;
 }
 
 #nave {
@@ -74,6 +109,17 @@ body {
 	top: 41;
 	margin: auto;
 }
+
+.tiroInimigo {
+	width: 2px;
+	height: 5px;
+	border: 1px solid limegreen;
+	background-color: limegreen;
+	position: absolute;
+	display: block;
+	margin: auto;
+	z-index: 999;
+}
 </style>
 
 
@@ -88,6 +134,7 @@ body {
 	var score = 0;
 
 	//Definição dos Invasores
+	var inimigosPosicaoVerticalInicial = 80;
 	var velocidadeInimigos = 500;
 	var deslocamentoHorizontalInimigos = 20;
 	var distanciaHorizontalInvasores = 20;
@@ -101,6 +148,7 @@ body {
 	var posicaoVertical = 0; //
 	var movimentoNave = 60; // Incremento de movimento da nave
 	var tiroLiberado = true;
+	var vidas = 3;
 
 	function iniciarJogo() {
 		iniciarInvasores();
@@ -267,6 +315,7 @@ body {
 	}
 
 	function iniciarInvasores() {
+		$("#txtScore").html("Pontuação : "+score);
 		var n = 0;
 		var div;
 		for (i = 0; i < invasoresColuna; i++) {
@@ -277,12 +326,12 @@ body {
 				div.setAttribute("class", "invasor");
 				div.setAttribute("x", i
 						* (distanciaHorizontalInvasores + tamanhoInvasores));
-				div.setAttribute("y", j
+				div.setAttribute("y", inimigosPosicaoVerticalInicial+ j
 						* (distanciaVerticalInvasores + tamanhoInvasores));
 
 				div.setAttribute("style", "left: " + i
 						* (distanciaHorizontalInvasores + tamanhoInvasores)
-						+ "px; top:" + j
+						+ "px; top:" + inimigosPosicaoVerticalInicial+j
 						* (distanciaVerticalInvasores + tamanhoInvasores)
 						+ "px");
 				$("#divStage").append(div);
@@ -292,9 +341,7 @@ body {
 
 		intervalMove = setInterval(
 				function moverInvasores() {
-					
-					
-					
+	
 					var direcao = direcaoHorizontal;
 					var posicao = posicaoVertical;
 					var x;
@@ -376,7 +423,9 @@ body {
 							}
 						}
 					}
-
+					if (vidas > 0) {
+						tiroInimigo();
+					}
 				}, velocidadeInimigos);
 
 	}
@@ -391,15 +440,64 @@ body {
 							&& y <= (top + tamanhoInvasores)) {
 						$(this).remove();
 						tiro.remove();
+						score+=10;
+						$("#txtScore").html("Pontuação : "+score);
 						return true;
 					}
 				});
 	}
+	
+	function tiroInimigo() {
+		invasor = $('.invasor');
+		invasorAleatorio = $(invasor[Math.floor(Math.random()*invasor.length)]);
+		posx = invasorAleatorio.position().left + 15;
+		posy = invasorAleatorio.position().top + 30;
+		
+		$('<div />', {"class": 'tiroInimigo'}).css("left", posx).css("top", posy).appendTo($("#divStage"));
+		$(".tiroInimigo").last().animate({ "top": "600"}
+		,{
+		    duration:10000,
+		    start:function(){
+		    	
+		    },
+		    complete:function(){
+		    	$(this).remove();		    	
+		    },
+		    progress: function(){
+		    	var posicaoTiro = $(this).offset();
+		    	if (naveAtingida(posicaoTiro.left, posicaoTiro.top, $(this))) {
+		    		$(this).remove();
+		    		 $("#scoreGame").text("Vida(s): " + vidas);
+					  if (vidas < 1) {
+						  $(".tiroInimigo").stop();
+						  $(".invasor").remove();
+						  $("#scoreGame").text("GAME OVER");
+						  
+					  }
+		    	}
+		    }
+		
+		});	
+		
+	}
+	
+	function naveAtingida(left, top, tiro) {
+			  navex = $("#nave").offset().left;
+			  navey = $("#nave").offset().top;
+			  if (( left >= navex) && left <= (navex + 40) &&  top >= navey && top <= (navey+40)){
+				  vidas--;
+				return true;
+			  }
+	}
+	
 </script>
 
 </head>
 <body>
 	<div class="stage" id="divStage">
+	<div id="scoreGame"></div>
+	<h3 id="txtScore" class="txtscore"></h3>
+    		
 		<div id="prepareGame">
 			Space Invaders by IFPE pós team<br />Pressiona ENTER para iniciar o
 			jogo.
