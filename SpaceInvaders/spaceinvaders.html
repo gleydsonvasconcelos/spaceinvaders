@@ -3,8 +3,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<script src="http://code.jquery.com/jquery-3.1.1.js"></script>
-<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/jquery-ui.js"></script>
 
 <style type="text/css">
 .stage {
@@ -98,14 +98,23 @@
 			
 		switch (keyCode) {
 				case seta.esquerda:
-					nave.animate({left : "-=" + movimentoNave}, 100, 'swing')
+					if ((nave.offset().left - movimentoNave) >=  $("#divStage").offset().left) {
+						nave.animate({left : "-=" + movimentoNave}, 100, 'swing');
+					} else {
+						nave.css("left", -780);
+					}
 					break;
 	
 				case seta.cima:
 					break;
 	
-				case seta.direita: 
-					nave.animate({left : "+=" + movimentoNave}, 100, 'swing')
+				case seta.direita:
+					if ((nave.offset().left + 40) <=  $("#divStage").position().left + 820) {
+						nave.animate({left : "+=" + movimentoNave}, 100, 'swing');
+					} else {
+						nave.css("left", 780);
+					}
+					
 					break;
 	
 				case seta.baixo: 
@@ -140,11 +149,14 @@
 			    },
 			    complete:function(){
 			    	tiroLiberado = true;
+			    	
 			    },
 			    progress: function(){
-			    	var posicaoTiro = $(this).position();
-			    	removeInimigo(posicaoTiro.left, posicaoTiro.top);
-			    	//Falta remover o tiro da tela e liberar o proximo tiro
+			    	var posicaoTiro = $(this).offset();
+			    	if (removeInimigo(posicaoTiro.left, posicaoTiro.top, $(this))) {
+			    		tiroLiberado = true;
+			    		$(this).remove();
+			    	}
 			    }
 			
 			});	
@@ -237,23 +249,20 @@
 		}
 	}
 
-	function removeInimigo(left, top) {
-		var quantidadeInimigos = document.getElementsByName("invasor").length;
+	function removeInimigo(left, top, tiro) {
 		var x, y;
-		for (i = 0; i < quantidadeInimigos; i++) {
-			x = parseInt(document.getElementsByName("invasor")[i].getAttribute("x"));
-			y = parseInt(document.getElementsByName("invasor")[i].getAttribute("y"));
-			if ( x >= left && x <= (left + tamanhoInvasores)
-					&&  y>= top && y <= (top + tamanhoInvasores)){
-				console.log("tiro");
-				//document.getElementsByName("invasor")[i].hide("explode",500);
-				$("#"+document.getElementsByName("invasor")[i].getAttribute("id")).hide("explode",300);
-				document.getElementsByName("invasor")[i].remove();
-				return;
-			}
-		}
-
+		$( ".invasor" ).each(function( index ) {
+			  x = $(this).offset().left;
+			  y = $(this).offset().top;
+			  if ( left >= x && left <= (x + tamanhoInvasores)
+						&&  y >= top && y <= (top + tamanhoInvasores)){
+					$(this).remove();
+					tiro.remove();
+					return true;
+			  }
+		});
 	}
+	
 	
 
 </script>
